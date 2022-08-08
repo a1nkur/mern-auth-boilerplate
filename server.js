@@ -3,11 +3,11 @@ const morgan = require('morgan')
 const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+
 // Config dotev
 require('dotenv').config({
     path: './config/config.env'
 })
-
 
 const app = express()
 
@@ -16,11 +16,12 @@ connectDB();
 
 // body parser
 app.use(bodyParser.json())
+
 // Load routes
 const authRouter = require('./routes/auth.route')
 const userRouter = require('./routes/user.route')
 
-// Dev Logginf Middleware
+// Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
     app.use(cors({
         origin: process.env.CLIENT_URL
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api', authRouter)
 app.use('/api', userRouter)
 
+// 404
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -42,5 +44,5 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
+    console.log(`App listening on port ${PORT}.`);
 });
